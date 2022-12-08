@@ -1,24 +1,11 @@
-from PyQt6.QtWidgets import QMainWindow, QApplication
+import sys
 
-from start_window import Ui_StartWindow # starting window in start_window.py
-from game_window import Ui_GameWindow   # game window in game_window.py
+from PyQt6.QtWidgets import QApplication
 
-
-class StartWindow(QMainWindow, Ui_StartWindow):
-    def __init__(self):
-        super(StartWindow, self).__init__()
-        self.setupUi(self)
-
-
-class GameWindow(QMainWindow, Ui_GameWindow):
-    def __init__(self):
-        super(GameWindow, self).__init__()
-        self.setupUi(self)
-
+from ui.view import *
 
 if __name__ == "__main__":
     app = QApplication([])
     window = StartWindow()
-
     window.show()
-    app.exec()
+    sys.exit(app.exec())
