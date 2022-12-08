@@ -1,7 +1,10 @@
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
-from start_window import Ui_StartWindow # starting window in start_window.py
-from game_window import Ui_GameWindow   # game window in game_window.py
+from ui.start_window import Ui_StartWindow # starting window in start_window.py
+from ui.game_window import Ui_GameWindow   # game window in game_window.py
+
+HOST = '127.0.0.1'
+PORT = 5060
 
 
 class StartWindow(QMainWindow, Ui_StartWindow):
@@ -17,8 +20,9 @@ class GameWindow(QMainWindow, Ui_GameWindow):
 
 
 if __name__ == "__main__":
-    app = QApplication([])
-    window = StartWindow()
-
-    window.show()
-    app.exec()
+    # app = QApplication([])
+    # window = StartWindow()
+    #
+    # window.show()
+    # app.exec()
+    pass
