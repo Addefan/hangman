@@ -1,6 +1,7 @@
 import socket
 import threading
 import uuid
+import json
 
 HOST = '127.0.0.1'
 PORT = 5060
@@ -10,13 +11,13 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 server.listen()
 
-clients = []
+players = []
 games = {}  # currently active games
-queue = {}  # players waiting for opponent
+queue = {}  # created games with one player waiting for opponent
 
 
-def broadcast(message: str, players: list):
-    for player in players:
+def broadcast(message: str, game_name):
+    for player in games[game_name]:
         player.send(message.encode('ascii'))
 
 
@@ -37,17 +38,31 @@ def handle_game(game_name: str, word: str, guesser):
                 is_word_sent = True
             else:
                 letter = guesser.recv(1024)
-                broadcast(letter, games[game_name])
+                broadcast(letter, game_name)
         except Exception as exc:
             print(exc)
             games.pop(game_name)
 
 
+def handle_before_game(player):
+    games['new1'] = ['123']
+    games['new2'] = ['124']
+    games_str = json.dumps(games).encode('ascii')
+    player.send(games_str)
+
+    while True:
+        pass
+
+
 def start():
     while True:
         player, address = server.accept()
-        clients.append(player)
+        players.append(player)
+        print(type(player))
+
+        client_thread = threading.Thread(target=handle_before_game, args=(player,))
+        client_thread.start()
 
 
 if __name__ == "__main__":
-    create_game('name', '12')
+    start()

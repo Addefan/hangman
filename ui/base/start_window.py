@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_StartWindow(object):
     def setupUi(self, StartWindow):
         StartWindow.setObjectName("StartWindow")
-        StartWindow.resize(698, 409)
+        StartWindow.resize(695, 403)
         StartWindow.setStyleSheet("background-color: rgb( 255, 255, 255)")
         self.centralwidget = QtWidgets.QWidget(StartWindow)
         self.centralwidget.setStyleSheet("backgroud-color: rgb(215, 225, 255)")
@@ -70,6 +70,25 @@ class Ui_StartWindow(object):
         self.games_title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.games_title.setOpenExternalLinks(False)
         self.games_title.setObjectName("games_title")
+        self.scroll_games = QtWidgets.QScrollArea(self.container)
+        self.scroll_games.setGeometry(QtCore.QRect(30, 80, 641, 231))
+        self.scroll_games.setWidgetResizable(True)
+        self.scroll_games.setObjectName("scroll_games")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 639, 229))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.game_label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.game_label.setGeometry(QtCore.QRect(10, 9, 621, 31))
+        self.game_label.setStyleSheet("background: rgb(221, 226, 255)")
+        self.game_label.setObjectName("game_label")
+        self.Connect = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
+        self.Connect.setGeometry(QtCore.QRect(553, 15, 71, 20))
+        self.Connect.setStyleSheet("background: rgb(31, 44, 56);\n"
+"border-radius: 3;\n"
+"color: white;\n"
+"")
+        self.Connect.setObjectName("Connect")
+        self.scroll_games.setWidget(self.scrollAreaWidgetContents)
         StartWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(StartWindow)
@@ -82,3 +101,5 @@ class Ui_StartWindow(object):
         self.rules.setText(_translate("StartWindow", "RULES"))
         self.new_game.setText(_translate("StartWindow", "NEW GAME"))
         self.games_title.setText(_translate("StartWindow", "JOIN GAMES"))
+        self.game_label.setText(_translate("StartWindow", "Game label"))
+        self.Connect.setText(_translate("StartWindow", "CONNECT"))
