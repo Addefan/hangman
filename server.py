@@ -45,9 +45,9 @@ def handle_game(game_name: str, word: str, guesser):
 
 
 def handle_before_game(player):
-    games['new1'] = ['123']
-    games['new2'] = ['124']
-    games_str = json.dumps(games).encode('ascii')
+    create_game('new', player)
+    print(queue)
+    games_str = (' '.join(queue.keys())).encode('ascii')
     player.send(games_str)
 
     while True:
