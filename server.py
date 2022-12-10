@@ -19,7 +19,7 @@ def broadcast(message: str, game_name):
         player.send(message.encode('ascii'))
 
 
-def create_game(game_name: str, player, word: str):
+def create_game(game_name: str, player: socket.socket, word: str):
     game_name = game_name + '#' + str(uuid.uuid4())[:4]
     queue[game_name] = {
         'player': player,
@@ -45,7 +45,7 @@ def handle_game(game_name: str, guesser):
 
 
 def handle_before_game(player):
-    create_game('newbie', player, 'word')
+    create_game('NoGames', player, 'word')
     games_str = (' '.join(queue.keys())).encode('ascii')
     player.send(games_str)
 
@@ -57,7 +57,10 @@ def handle_before_game(player):
             thread.start()
             break
         else:
-            pass
+            game_name = player.recv(1024).decode('ascii')
+            word = player.recv(1024).decode('ascii')
+            create_game(game_name, player, word)
+            print(game_name, word)
 
 
 def start():

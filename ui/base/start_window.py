@@ -72,6 +72,9 @@ class Ui_StartWindow(object):
         self.games_title.setObjectName("games_title")
         self.scrollArea = QtWidgets.QScrollArea(self.container)
         self.scrollArea.setGeometry(QtCore.QRect(30, 79, 641, 221))
+        self.scrollArea.setStyleSheet("border-radius: 3px;\n"
+"border: 1px solid rgb(31, 44, 56);\n"
+"")
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
