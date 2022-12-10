@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'only_start.ui'
+# Form implementation generated from reading ui file 'start.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.0
 #

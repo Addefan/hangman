@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'player.ui'
+# Form implementation generated from reading ui file 'game.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.0
 #
