@@ -37,7 +37,7 @@ def handle_game(game_name: str, word: str, guesser):
                 guesser.send(word.encode('ascii'))
                 is_word_sent = True
             else:
-                letter = guesser.recv(1024)
+                letter = guesser.recv(1024).decode('ascii')
                 broadcast(letter, game_name)
         except Exception as exc:
             print(exc)
