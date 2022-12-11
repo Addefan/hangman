@@ -1,3 +1,4 @@
+import socket
 import threading
 from os.path import join
 
@@ -16,6 +17,10 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
                        7: (19, 56, 94, 165, 179, 199, 214),
                        6: (56, 94, 165, 179, 199, 214)}
     stage = 0
+
+    class SignalReceiver(QtCore.QObject):
+        gif_paused = QtCore.pyqtSignal(int)
+        game_finished = QtCore.pyqtSignal()
 
     def __init__(self, player, room_name, role, guessed_word, attempts):
         super().__init__()
@@ -36,7 +41,10 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
             self.letters.setDisabled(True)
         for number, letter in enumerate(self.guessed_word):
             self.add_letter_to_screen(number)
+        self.signal_receiver = self.SignalReceiver()
 
+        self.signal_receiver.game_finished.connect(self.finish_game)
+        self.signal_receiver.gif_paused.connect(self.set_gif_pause)
         self.gif.frameChanged.connect(self.gif_frame_changed)
         for letter in range(65, 91):
             self.__getattribute__(chr(letter)).clicked.connect(
@@ -44,6 +52,13 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
 
         self.receiver = threading.Thread(target=self.receive)
         self.receiver.start()
+
+    def finish_game(self):
+        self.game_is_over = True
+        QtCore.QTimer.singleShot(500, lambda: self.hide())
+
+    def set_gif_pause(self, set_pause: bool):
+        self.gif.setPaused(set_pause)
 
     def add_letter_to_screen(self, number, symbol="　"):
         label_name = f"letter_{number}"
@@ -67,10 +82,9 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
             button.setStyleSheet("background-color:rgba(255, 0, 0, 150);")
             self.current_mistakes.display(self.current_mistakes.value() + 1)
             self.stage += 1
-            self.gif.setPaused(False)
+            self.signal_receiver.gif_paused.emit(0)
             if self.current_mistakes.value() == self.maximum_mistakes.value():
                 self.letters.setEnabled(False)
-                self.game_is_over = True
         else:
             button.setStyleSheet("background-color:rgba(0, 255, 0, 150);")
             for number, letter in enumerate(self.guessed_word):
@@ -79,15 +93,14 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
             self.guessed_word = self.guessed_word.replace(button.text(), "_")
             if set(self.guessed_word) == {"_"}:
                 self.letters.setEnabled(False)
-                self.game_is_over = True
-                QtCore.QTimer.singleShot(500, lambda: self.hide())
+                self.signal_receiver.game_finished.emit()
 
     def gif_frame_changed(self, v):
         if v == self.gif.frameCount() - 1:
             self.gif.stop()
-            QtCore.QTimer.singleShot(500, lambda: self.hide())
+            self.signal_receiver.game_finished.emit()
         elif v == self.attempts_stages[self.attempts][self.stage - 1]:
-            self.gif.setPaused(True)
+            self.signal_receiver.gif_paused.emit(1)
 
     def resizeEvent(self, event):
         self.gif.setScaledSize(QtCore.QSize(self.gif_label.height(), self.gif_label.height()))
