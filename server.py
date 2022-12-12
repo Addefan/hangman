@@ -28,8 +28,7 @@ def create_game(game_name: str, player: socket.socket, word: str):
 
 
 def handle_game(game_name: str, guesser):
-    games[game_name] = [queue[game_name], guesser]
-    guesser.send(queue[game_name]['word'].encode('ascii'))  # sending word to guesser
+    games[game_name] = [queue[game_name]['player'], guesser]
     queue.pop(game_name)
 
     print(games[game_name])
@@ -45,14 +44,14 @@ def handle_game(game_name: str, guesser):
 
 
 def handle_before_game(player):
-    create_game('NoGames', player, 'word')
-    games_str = (' '.join(queue.keys())).encode('ascii')
+    games_str = (' '.join(queue.keys())).encode('ascii') if len(queue) > 0 else ' '.encode('ascii')
     player.send(games_str)
 
     while True:
         response = player.recv(1024).decode('ascii')
         if response == 'join':
             game_name = player.recv(1024).decode('ascii')
+            player.send(queue[game_name]['word'].encode('ascii'))  # sending word to guesser
             thread = threading.Thread(target=handle_game, args=(game_name, player))
             thread.start()
             break
@@ -61,13 +60,14 @@ def handle_before_game(player):
             word = player.recv(1024).decode('ascii')
             create_game(game_name, player, word)
             print(game_name, word)
+            break
 
 
 def start():
     while True:
         player, address = server.accept()
         players.append(player)
-        print(type(player))
+        print('Connected new player!')
 
         client_thread = threading.Thread(target=handle_before_game, args=(player,))
         client_thread.start()

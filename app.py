@@ -1,5 +1,6 @@
 import sys
 
+from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtWidgets import QApplication
 
 from ui.view import *
@@ -7,8 +8,8 @@ from ui.view import *
 if __name__ == "__main__":
     app = QApplication([])
     window = StartWindow()
-    window.move(0, 0)  # левый верхний
-    # window.move(QGuiApplication.primaryScreen().availableGeometry().width() - window.width(), 0)    # правый верхний
+    # window.move(0, 0)  # левый верхний
+    window.move(QGuiApplication.primaryScreen().availableGeometry().width() - window.width(), 0)    # правый верхний
 
     window.show()
     sys.exit(app.exec())
