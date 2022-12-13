@@ -8,7 +8,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 server.listen()
 
-players = []
+watching = []   # players watching for games
 games = {}  # currently active games
 queue = {}  # created games with one player waiting for opponent
 
@@ -16,6 +16,11 @@ queue = {}  # created games with one player waiting for opponent
 def broadcast(message: str, game_name):
     for player in games[game_name]:
         player.send(message.encode('ascii'))
+
+
+def send_game(game_name):
+    for player in watching:
+        player.send(game_name.encode('ascii'))
 
 
 def create_game(game_name: str, player: socket.socket, word: str, attempts: int):
@@ -44,22 +49,31 @@ def handle_before_game(player):
     player.send(games_str)
 
     while True:
-        response = player.recv(1024).decode('ascii').split(';')
-        if response[0] == 'join':
-            game_name = player.recv(1024).decode('ascii')
-            player.send(queue[game_name]['word'].encode('ascii'))  # sending word to guesser
-            thread = threading.Thread(target=handle_game, args=(game_name, player))
-            thread.start()
-            break
-        else:
-            create_game(response[1], player, response[2], int(response[3]))
-            break
+        try:
+            response = player.recv(1024).decode('ascii').split(';')
+            print(response)
+            watching.remove(player)
+            if response[0] == 'join':
+                player.send(queue[response[1]]['word'].encode('ascii'))  # sending word to guesser
+                print(queue[response[1]]['word'])
+                thread = threading.Thread(target=handle_game, args=(response[1], player))
+                thread.start()
+                break
+            else:
+                create_game(response[1], player, response[2], int(response[3]))
+                print(response)
+                send_game(response[1])
+                break
+        except Exception as exc:
+            print(exc)
+            print('Removed player with failed connection!')
+            watching.remove(player)
 
 
 def start():
     while True:
         player, address = server.accept()
-        players.append(player)
+        watching.append(player)
         print('Connected new player!')
 
         client_thread = threading.Thread(target=handle_before_game, args=(player,))

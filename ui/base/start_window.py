@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_StartWindow(object):
     def setupUi(self, StartWindow):
         StartWindow.setObjectName("StartWindow")
-        StartWindow.resize(695, 403)
+        StartWindow.resize(695, 429)
         StartWindow.setStyleSheet("background-color: rgb( 255, 255, 255)")
         self.centralwidget = QtWidgets.QWidget(StartWindow)
         self.centralwidget.setStyleSheet("backgroud-color: rgb(215, 225, 255)")
@@ -34,7 +34,7 @@ class Ui_StartWindow(object):
         self.title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.title.setObjectName("title")
         self.container = QtWidgets.QWidget(self.centralwidget)
-        self.container.setGeometry(QtCore.QRect(-1, 79, 701, 331))
+        self.container.setGeometry(QtCore.QRect(-1, 79, 701, 351))
         self.container.setObjectName("container")
         self.rules = QtWidgets.QPushButton(self.container)
         self.rules.setGeometry(QtCore.QRect(589, 10, 81, 20))
@@ -61,7 +61,7 @@ class Ui_StartWindow(object):
 "")
         self.new_game.setObjectName("new_game")
         self.games_title = QtWidgets.QLabel(self.container)
-        self.games_title.setGeometry(QtCore.QRect(250, 30, 201, 31))
+        self.games_title.setGeometry(QtCore.QRect(250, 29, 201, 31))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         font.setPointSize(20)
@@ -83,6 +83,18 @@ class Ui_StartWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout.setObjectName("verticalLayout")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_2)
+        self.update_button = QtWidgets.QPushButton(self.container)
+        self.update_button.setGeometry(QtCore.QRect(311, 316, 81, 20))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        font.setPointSize(10)
+        self.update_button.setFont(font)
+        self.update_button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.update_button.setStyleSheet("background: rgb(31, 44, 56);\n"
+"border-radius: 3;\n"
+"color: white;\n"
+"")
+        self.update_button.setObjectName("update_button")
         StartWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(StartWindow)
@@ -95,3 +107,4 @@ class Ui_StartWindow(object):
         self.rules.setText(_translate("StartWindow", "RULES"))
         self.new_game.setText(_translate("StartWindow", "NEW GAME"))
         self.games_title.setText(_translate("StartWindow", "JOIN GAMES"))
+        self.update_button.setText(_translate("StartWindow", "UPDATE"))
