@@ -1,3 +1,4 @@
+import re
 import socket
 import uuid
 
@@ -12,7 +13,6 @@ class CreateWindow(QMainWindow, Ui_CreateWindow):
     def __init__(self, player: socket.socket):
         super().__init__()
         self.game_window = None
-        self.message = None
         self.player = player
 
         self.setupUi(self)
@@ -20,8 +20,15 @@ class CreateWindow(QMainWindow, Ui_CreateWindow):
         self.create_button.clicked.connect(self.create_game)
 
     def create_game(self):
-        if not(self.game_name_input.text() and self.guessing_word_input.text()) and not self.message:
-            self.message_label.setText("Fill all inputs!")
+        game_name_validating = self.game_name_input.text()
+        word_validating = self.validate_word(self.guessing_word_input.text())
+        if not (game_name_validating and word_validating):
+            message = ""
+            if not game_name_validating:
+                message += "Fill in the fild with game name.\n"
+            if not word_validating:
+                message += "Word must consist only of letters of the Latin alphabet.\n"
+            self.message_label.setText(message.strip())
         else:
             game_name = self.game_name_input.text()
             game_name = f'{game_name}#{str(uuid.uuid4())[:4]}'
@@ -34,6 +41,10 @@ class CreateWindow(QMainWindow, Ui_CreateWindow):
             self.game_window.restoreGeometry(self.saveGeometry())
             self.game_window.show()
             self.close()
+
+    @staticmethod
+    def validate_word(word):
+        return word and not re.search(r'[^a-zA-Z]', word)
 
 
 if __name__ == "__main__":
