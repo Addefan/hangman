@@ -31,9 +31,6 @@ def handle_game(game_name: str, guesser):
     games[game_name] = [queue[game_name]['player'], guesser]
     queue.pop(game_name)
 
-    print(games[game_name])
-    print(queue)
-
     while True:
         try:
             letter = guesser.recv(1024).decode('ascii')
@@ -59,7 +56,6 @@ def handle_before_game(player):
             game_name = player.recv(1024).decode('ascii')
             word = player.recv(1024).decode('ascii')
             create_game(game_name, player, word)
-            print(game_name, word)
             break
 
 
