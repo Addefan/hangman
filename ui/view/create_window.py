@@ -1,6 +1,6 @@
 import socket
 
-from PyQt6.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel
+from PyQt6.QtWidgets import QMainWindow, QApplication, QLabel
 
 from ui.base.create_window import Ui_GameCreateWindow
 import ui.view
@@ -8,7 +8,7 @@ import ui.view
 
 class CreateWindow(QMainWindow, Ui_GameCreateWindow):
     def __init__(self, player: socket.socket):
-        super(CreateWindow, self).__init__()
+        super().__init__()
         self.game_window = None
         self.message = None
         self.player = player
@@ -22,12 +22,11 @@ class CreateWindow(QMainWindow, Ui_GameCreateWindow):
             self.message = QLabel(f"Fill all inputs!")
             self.verticalLayout.addWidget(self.message)
         else:
-            self.player.send('create'.encode('ascii'))
-            self.player.send(self.game_name.text().encode('ascii'))
-            self.player.send(self.guessing_word.text().encode('ascii'))
-            
-            self.game_window = ui.view.GameWindow(self.player, self.game_name.text(), 'leading',
-                                                  self.guessing_word.text(), 6)
+            game_name, guessing_word = self.game_name.text(), self.guessing_word.text()
+            self.player.send(f'create;{game_name};{guessing_word}'.encode('ascii'))
+
+            self.game_window = ui.view.GameWindow(self.player, game_name, 'leading',
+                                                  guessing_word, 6)
             self.game_window.show()
             self.close()
 

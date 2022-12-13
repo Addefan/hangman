@@ -49,18 +49,17 @@ def handle_before_game(player):
 
     while True:
         response = player.recv(1024).decode('ascii')
-        if response == 'join':
-            game_name = player.recv(1024).decode('ascii')
-            player.send(queue[game_name]['word'].encode('ascii'))  # sending word to guesser
-            thread = threading.Thread(target=handle_game, args=(game_name, player))
-            thread.start()
-            break
-        else:
-            game_name = player.recv(1024).decode('ascii')
-            word = player.recv(1024).decode('ascii')
-            create_game(game_name, player, word)
-            print(game_name, word)
-            break
+        match response.split(";"):
+            case "join", *args:
+                game_name = player.recv(1024).decode('ascii')
+                player.send(queue[game_name]['word'].encode('ascii'))  # sending word to guesser
+                thread = threading.Thread(target=handle_game, args=(game_name, player))
+                thread.start()
+                break
+            case "create", game_name, word:
+                create_game(game_name, player, word)
+                print(game_name, word)
+                break
 
 
 def start():
