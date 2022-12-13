@@ -4,9 +4,7 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QPushButton
 from PyQt6 import QtWidgets, QtCore, QtGui
 
 from ui.base.start_window import Ui_StartWindow  # starting window in start_window.py
-from ui.base.game_window import Ui_GameWindow  # game window in game_window.py
-from ui.view.create_window import CreateWindow
-from ui.view.game_window import GameWindow
+import ui.view
 
 HOST = '127.0.0.1'
 PORT = 5060
@@ -57,7 +55,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         self.verticalLayout.addWidget(new_label)
 
     def create_game(self):
-        self.create_window = CreateWindow(self.player)
+        self.create_window = ui.view.CreateWindow(self.player)
 
         self.create_window.show()
         self.close()
@@ -66,7 +64,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         self.player.send('join'.encode('ascii'))
         self.player.send(gn.encode('ascii'))
 
-        self.game_window = GameWindow()
+        self.game_window = ui.view.GameWindow()
         self.game_window.show()
         self.close()
 

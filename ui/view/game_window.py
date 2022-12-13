@@ -5,6 +5,7 @@ from os.path import join
 from PyQt6 import QtWidgets, QtCore, QtGui
 
 from ui.base import Ui_GameWindow
+import ui.view
 
 
 class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
@@ -20,17 +21,20 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
 
     class SignalReceiver(QtCore.QObject):
         gif_paused = QtCore.pyqtSignal(int)
-        game_finished = QtCore.pyqtSignal()
+        game_finished = QtCore.pyqtSignal(int)
 
     def __init__(self, player, room_name, role, guessed_word, attempts):
         super().__init__()
         self.setupUi(self)
+
         self.player = player
         self.room_name = room_name
         self.role = role.capitalize()
         self.guessed_word = guessed_word.upper()
         self.attempts = attempts
         self.game_is_over = False
+        self.end_window = None
+        self.message = None
 
         self.gif = QtGui.QMovie(join("ui", "media", "hangman.gif"), QtCore.QByteArray(), self)
         self.gif_label.setMovie(self.gif)
@@ -53,9 +57,16 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
         self.receiver = threading.Thread(target=self.receive)
         self.receiver.start()
 
-    def finish_game(self):
+    def finish_game(self, result: bool):
+        # result == True <=> player won, result == False <=> player lose
         self.game_is_over = True
-        QtCore.QTimer.singleShot(500, lambda: self.hide())
+        self.message = "The word was guessed!" if result else "The word wasn't guessed."
+        QtCore.QTimer.singleShot(500, lambda: self.change_window(self.message))
+
+    def change_window(self, message):
+        self.end_window = ui.view.EndWindow(self.player, message)
+        self.end_window.show()
+        self.close()
 
     def set_gif_pause(self, set_pause: bool):
         self.gif.setPaused(set_pause)
@@ -93,12 +104,12 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
             self.guessed_word = self.guessed_word.replace(button.text(), "_")
             if set(self.guessed_word) == {"_"}:
                 self.letters.setEnabled(False)
-                self.signal_receiver.game_finished.emit()
+                self.signal_receiver.game_finished.emit(1)
 
     def gif_frame_changed(self, v):
         if v == self.gif.frameCount() - 1:
             self.gif.stop()
-            self.signal_receiver.game_finished.emit()
+            self.signal_receiver.game_finished.emit(0)
         elif v == self.attempts_stages[self.attempts][self.stage - 1]:
             self.signal_receiver.gif_paused.emit(1)
 
