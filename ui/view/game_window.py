@@ -4,40 +4,47 @@ from os.path import join
 
 from PyQt6 import QtWidgets, QtCore, QtGui
 
+from enums import Role, Attempts
 from ui.base import Ui_GameWindow
+import ui.view
 
 
 class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
-    attempts_stages = {13: (19, 37, 47, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
-                       12: (19, 37, 47, 56, 70, 94, 165, 179, 188, 199, 206, 214),
-                       11: (19, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
-                       10: (19, 70, 78, 94, 165, 179, 188, 199, 206, 214),
-                       9: (19, 56, 78, 94, 165, 179, 199, 206, 214),
-                       8: (19, 56, 78, 94, 165, 179, 199, 214),
-                       7: (19, 56, 94, 165, 179, 199, 214),
-                       6: (56, 94, 165, 179, 199, 214)}
+    attempts_stages = {
+        Attempts.thirteen: (19, 37, 47, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.twelve: (19, 37, 47, 56, 70, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.eleven: (19, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.ten: (19, 70, 78, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.nine: (19, 56, 78, 94, 165, 179, 199, 206, 214),
+        Attempts.eight: (19, 56, 78, 94, 165, 179, 199, 214),
+        Attempts.seven: (19, 56, 94, 165, 179, 199, 214),
+        Attempts.six: (56, 94, 165, 179, 199, 214)
+    }
     stage = 0
 
     class SignalReceiver(QtCore.QObject):
         gif_paused = QtCore.pyqtSignal(int)
-        game_finished = QtCore.pyqtSignal()
+        game_finished = QtCore.pyqtSignal(int)
 
     def __init__(self, player, room_name, role, guessed_word, attempts):
         super().__init__()
         self.setupUi(self)
+
         self.player = player
         self.room_name = room_name
         self.role = role.capitalize()
         self.guessed_word = guessed_word.upper()
         self.attempts = attempts
         self.game_is_over = False
+        self.end_window = None
+        self.message = None
 
         self.gif = QtGui.QMovie(join("ui", "media", "hangman.gif"), QtCore.QByteArray(), self)
         self.gif_label.setMovie(self.gif)
         self.setWindowTitle(f"Hangman - {self.room_name}")
         self.role_input.setText(self.role)
         self.maximum_mistakes.display(self.attempts)
-        if self.role == "Leading":
+        if self.role == Role.leading:
             self.letters.setDisabled(True)
         for number, letter in enumerate(self.guessed_word):
             self.add_letter_to_screen(number)
@@ -53,9 +60,17 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
         self.receiver = threading.Thread(target=self.receive)
         self.receiver.start()
 
-    def finish_game(self):
+    def finish_game(self, result: bool):
+        # result == True <=> player won, result == False <=> player lose
         self.game_is_over = True
-        QtCore.QTimer.singleShot(500, lambda: self.hide())
+        self.message = "The word was guessed!" if result else "The word wasn't guessed."
+        QtCore.QTimer.singleShot(500, lambda: self.change_window(self.message))
+
+    def change_window(self, message):
+        self.end_window = ui.view.EndWindow(self.player, message)
+        self.end_window.restoreGeometry(self.saveGeometry())
+        self.end_window.show()
+        self.close()
 
     def set_gif_pause(self, set_pause: bool):
         self.gif.setPaused(set_pause)
@@ -93,12 +108,12 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
             self.guessed_word = self.guessed_word.replace(button.text(), "_")
             if set(self.guessed_word) == {"_"}:
                 self.letters.setEnabled(False)
-                self.signal_receiver.game_finished.emit()
+                self.signal_receiver.game_finished.emit(1)
 
     def gif_frame_changed(self, v):
         if v == self.gif.frameCount() - 1:
             self.gif.stop()
-            self.signal_receiver.game_finished.emit()
+            self.signal_receiver.game_finished.emit(0)
         elif v == self.attempts_stages[self.attempts][self.stage - 1]:
             self.signal_receiver.gif_paused.emit(1)
 

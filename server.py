@@ -1,6 +1,5 @@
 import socket
 import threading
-import uuid
 
 HOST = '127.0.0.1'
 PORT = 5060
@@ -19,11 +18,11 @@ def broadcast(message: str, game_name):
         player.send(message.encode('ascii'))
 
 
-def create_game(game_name: str, player: socket.socket, word: str):
-    game_name = game_name + '#' + str(uuid.uuid4())[:4]
+def create_game(game_name: str, player: socket.socket, word: str, attempts: int):
     queue[game_name] = {
         'player': player,
-        'word': word
+        'word': word,
+        'attempts': attempts
     }
 
 
@@ -45,17 +44,15 @@ def handle_before_game(player):
     player.send(games_str)
 
     while True:
-        response = player.recv(1024).decode('ascii')
-        if response == 'join':
+        response = player.recv(1024).decode('ascii').split(';')
+        if response[0] == 'join':
             game_name = player.recv(1024).decode('ascii')
             player.send(queue[game_name]['word'].encode('ascii'))  # sending word to guesser
             thread = threading.Thread(target=handle_game, args=(game_name, player))
             thread.start()
             break
         else:
-            game_name = player.recv(1024).decode('ascii')
-            word = player.recv(1024).decode('ascii')
-            create_game(game_name, player, word)
+            create_game(response[1], player, response[2], int(response[3]))
             break
 
 
