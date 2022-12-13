@@ -19,11 +19,12 @@ def broadcast(message: str, game_name):
         player.send(message.encode('ascii'))
 
 
-def create_game(game_name: str, player: socket.socket, word: str):
+def create_game(game_name: str, player: socket.socket, word: str, attempts: int):
     game_name = game_name + '#' + str(uuid.uuid4())[:4]
     queue[game_name] = {
         'player': player,
-        'word': word
+        'word': word,
+        'attempts': attempts
     }
 
 
@@ -56,9 +57,8 @@ def handle_before_game(player):
                 thread = threading.Thread(target=handle_game, args=(game_name, player))
                 thread.start()
                 break
-            case "create", game_name, word:
-                create_game(game_name, player, word)
-                print(game_name, word)
+            case "create", game_name, word, attempts:
+                create_game(game_name, player, word, int(attempts))
                 break
 
 

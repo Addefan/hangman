@@ -2,8 +2,8 @@ import enum
 
 
 class Role(str, enum.Enum):
-    player = "player"
-    leading = "leading"
+    player = "Player"
+    leading = "Leading"
 
 
 class Attempts(int, enum.Enum):
