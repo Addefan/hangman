@@ -1,4 +1,5 @@
 import socket
+import uuid
 
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
@@ -23,6 +24,7 @@ class CreateWindow(QMainWindow, Ui_CreateWindow):
             self.message_label.setText("Fill all inputs!")
         else:
             game_name = self.game_name_input.text()
+            game_name = f'{game_name}#{str(uuid.uuid4())[:4]}'
             guessing_word = self.guessing_word_input.text()
             attempts = int(self.attempts_number_choises.currentText())
             self.player.send(f'create;{game_name};{guessing_word};{attempts}'.encode('ascii'))

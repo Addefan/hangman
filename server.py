@@ -1,6 +1,5 @@
 import socket
 import threading
-import uuid
 
 HOST = '127.0.0.1'
 PORT = 5060
@@ -20,7 +19,6 @@ def broadcast(message: str, game_name):
 
 
 def create_game(game_name: str, player: socket.socket, word: str, attempts: int):
-    game_name = game_name + '#' + str(uuid.uuid4())[:4]
     queue[game_name] = {
         'player': player,
         'word': word,
