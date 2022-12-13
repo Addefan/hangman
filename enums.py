@@ -2,7 +2,7 @@ import enum
 
 
 class Role(str, enum.Enum):
-    player = "Player"
+    guesser = "Guesser"
     leading = "Leading"
 
 

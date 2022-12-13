@@ -3,6 +3,7 @@ import socket
 from PyQt6.QtWidgets import QMainWindow, QApplication, QPushButton
 from PyQt6 import QtWidgets, QtCore, QtGui
 
+from enums import Role
 from ui.base.start_window import Ui_StartWindow  # starting window in start_window.py
 import ui.view
 
@@ -66,7 +67,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
 
         guessing_word = self.player.recv(1024).decode('ascii')
 
-        self.game_window = ui.view.GameWindow(self.player, gn, 'guesser', guessing_word, 6)
+        self.game_window = ui.view.GameWindow(self.player, gn, Role.guesser, guessing_word, 6)
         self.game_window.restoreGeometry(self.saveGeometry())
         self.game_window.show()
         self.close()
