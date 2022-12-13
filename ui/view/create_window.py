@@ -3,7 +3,7 @@ import socket
 from PyQt6.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel
 
 from ui.base.create_window import Ui_GameCreateWindow
-from ui.view import GameWindow
+import ui.view
 
 
 class CreateWindow(QMainWindow, Ui_GameCreateWindow):
@@ -26,7 +26,8 @@ class CreateWindow(QMainWindow, Ui_GameCreateWindow):
             self.player.send(self.game_name.text().encode('ascii'))
             self.player.send(self.guessing_word.text().encode('ascii'))
             
-            self.game_window = GameWindow(self.player, self.game_name.text(), 'creator', self.guessing_word.text(), 6)
+            self.game_window = ui.view.GameWindow(self.player, self.game_name.text(), 'leading',
+                                                  self.guessing_word.text(), 6)
             self.game_window.show()
             self.close()
 
