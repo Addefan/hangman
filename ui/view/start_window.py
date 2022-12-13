@@ -56,7 +56,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
 
     def create_game(self):
         self.create_window = ui.view.CreateWindow(self.player)
-
+        self.create_window.restoreGeometry(self.saveGeometry())
         self.create_window.show()
         self.close()
 
@@ -67,6 +67,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         guessing_word = self.player.recv(1024).decode('ascii')
 
         self.game_window = ui.view.GameWindow(self.player, gn, 'guesser', guessing_word, 6)
+        self.game_window.restoreGeometry(self.saveGeometry())
         self.game_window.show()
         self.close()
 

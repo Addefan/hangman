@@ -68,6 +68,7 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
 
     def change_window(self, message):
         self.end_window = ui.view.EndWindow(self.player, message)
+        self.end_window.restoreGeometry(self.saveGeometry())
         self.end_window.show()
         self.close()
 

@@ -20,5 +20,6 @@ class EndWindow(QtWidgets.QMainWindow, Ui_EndWindow):
     def go_to_menu(self):
         self.player.close()
         self.start_window = StartWindow()
+        self.start_window.restoreGeometry(self.saveGeometry())
         self.start_window.show()
         self.close()

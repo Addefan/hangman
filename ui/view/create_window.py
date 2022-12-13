@@ -29,6 +29,7 @@ class CreateWindow(QMainWindow, Ui_CreateWindow):
 
             self.game_window = ui.view.GameWindow(self.player, game_name, Role.leading,
                                                   guessing_word, Attempts(attempts))
+            self.game_window.restoreGeometry(self.saveGeometry())
             self.game_window.show()
             self.close()
 
