@@ -2,6 +2,7 @@ import socket
 
 from PyQt6.QtWidgets import QMainWindow, QApplication, QLabel
 
+from enums import Role
 from ui.base.create_window import Ui_GameCreateWindow
 import ui.view
 
@@ -25,7 +26,7 @@ class CreateWindow(QMainWindow, Ui_GameCreateWindow):
             game_name, guessing_word = self.game_name.text(), self.guessing_word.text()
             self.player.send(f'create;{game_name};{guessing_word}'.encode('ascii'))
 
-            self.game_window = ui.view.GameWindow(self.player, game_name, 'leading',
+            self.game_window = ui.view.GameWindow(self.player, game_name, Role.leading,
                                                   guessing_word, 6)
             self.game_window.show()
             self.close()

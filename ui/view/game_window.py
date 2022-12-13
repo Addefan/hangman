@@ -4,6 +4,7 @@ from os.path import join
 
 from PyQt6 import QtWidgets, QtCore, QtGui
 
+from enums import Role
 from ui.base import Ui_GameWindow
 import ui.view
 
@@ -41,7 +42,7 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
         self.setWindowTitle(f"Hangman - {self.room_name}")
         self.role_input.setText(self.role)
         self.maximum_mistakes.display(self.attempts)
-        if self.role == "Leading":
+        if self.role == Role.leading:
             self.letters.setDisabled(True)
         for number, letter in enumerate(self.guessed_word):
             self.add_letter_to_screen(number)
