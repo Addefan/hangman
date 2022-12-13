@@ -4,20 +4,22 @@ from os.path import join
 
 from PyQt6 import QtWidgets, QtCore, QtGui
 
-from enums import Role
+from enums import Role, Attempts
 from ui.base import Ui_GameWindow
 import ui.view
 
 
 class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
-    attempts_stages = {13: (19, 37, 47, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
-                       12: (19, 37, 47, 56, 70, 94, 165, 179, 188, 199, 206, 214),
-                       11: (19, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
-                       10: (19, 70, 78, 94, 165, 179, 188, 199, 206, 214),
-                       9: (19, 56, 78, 94, 165, 179, 199, 206, 214),
-                       8: (19, 56, 78, 94, 165, 179, 199, 214),
-                       7: (19, 56, 94, 165, 179, 199, 214),
-                       6: (56, 94, 165, 179, 199, 214)}
+    attempts_stages = {
+        Attempts.thirteen: (19, 37, 47, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.twelve: (19, 37, 47, 56, 70, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.eleven: (19, 56, 70, 78, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.ten: (19, 70, 78, 94, 165, 179, 188, 199, 206, 214),
+        Attempts.nine: (19, 56, 78, 94, 165, 179, 199, 206, 214),
+        Attempts.eight: (19, 56, 78, 94, 165, 179, 199, 214),
+        Attempts.seven: (19, 56, 94, 165, 179, 199, 214),
+        Attempts.six: (56, 94, 165, 179, 199, 214)
+    }
     stage = 0
 
     class SignalReceiver(QtCore.QObject):
