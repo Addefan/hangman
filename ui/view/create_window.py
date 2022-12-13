@@ -26,7 +26,7 @@ class CreateWindow(QMainWindow, Ui_GameCreateWindow):
             self.player.send(self.game_name.text().encode('ascii'))
             self.player.send(self.guessing_word.text().encode('ascii'))
             
-            self.game_window = GameWindow()
+            self.game_window = GameWindow(self.player, self.game_name.text(), 'creator', self.guessing_word.text(), 6)
             self.game_window.show()
             self.close()
 

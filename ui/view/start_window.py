@@ -64,7 +64,9 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         self.player.send('join'.encode('ascii'))
         self.player.send(gn.encode('ascii'))
 
-        self.game_window = ui.view.GameWindow()
+        guessing_word = self.player.recv(1024).decode('ascii')
+
+        self.game_window = ui.view.GameWindow(self.player, gn, 'guesser', guessing_word, 6)
         self.game_window.show()
         self.close()
 

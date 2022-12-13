@@ -1,5 +1,6 @@
 import sys
 
+from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtWidgets import QApplication
 
 import ui.view
