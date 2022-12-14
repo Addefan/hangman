@@ -123,9 +123,15 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
     def receive(self):
         while not self.game_is_over:
             try:
-                letter = self.player.recv(1024).decode('ascii')
-                self.letter_button_clicked(letter)
+                message = self.player.recv(1024).decode('ascii')
+                if len(message) == 1:
+                    self.letter_button_clicked(message)
+                elif message == "exit":
+                    self.signal_receiver.game_finished.emit(0)
             except Exception as exc:
                 print(exc)
                 self.close()
                 break
+
+    def closeEvent(self, event):
+        self.player.send('exit'.encode('ascii'))

@@ -36,8 +36,12 @@ def handle_game(game_name: str, guesser):
 
     while True:
         try:
-            letter = guesser.recv(1024).decode('ascii')
-            broadcast(letter, game_name)
+            message = guesser.recv(1024).decode('ascii')
+            if len(message) == 1:
+                broadcast(message, game_name)
+            elif message == "exit":
+                broadcast(message, game_name)
+                games.pop(game_name)
         except Exception as exc:
             print(exc)
             games.pop(game_name) if game_name in games else None
