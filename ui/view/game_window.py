@@ -77,19 +77,21 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
         self.gif.setPaused(set_pause)
 
     def add_letter_to_screen(self, number, symbol="　"):
-        label_name = f"letter_{number}"
-        self.__setattr__(label_name, QtWidgets.QLabel(self.word))
-        self.__getattribute__(label_name).setMinimumSize(QtCore.QSize(32, 32))
-        self.__getattribute__(label_name).setMaximumSize(QtCore.QSize(32, 32))
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
         font.setPointSize(12)
+
+        label = QtWidgets.QLabel(self.word)
+        label.setMinimumSize(QtCore.QSize(32, 32))
+        label.setMaximumSize(QtCore.QSize(32, 32))
         font.setUnderline(True)
-        self.__getattribute__(label_name).setFont(font)
-        self.__getattribute__(label_name).setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.__getattribute__(label_name).setObjectName(label_name)
-        self.horizontalLayout_5.addWidget(self.__getattribute__(label_name))
-        self.__getattribute__(label_name).setText(symbol)
+        label.setFont(font)
+        label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        label.setObjectName(f"letter_{number}")
+        label.setText(symbol)
+
+        self.horizontalLayout_5.addWidget(label)
+        self.__setattr__(f"letter_{number}", label)
 
     def letter_button_clicked(self, letter):
         button = self.__getattribute__(letter)
