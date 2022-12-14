@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'untitled.ui'
+# Form implementation generated from reading ui file 'end_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.0
 #
@@ -20,6 +20,14 @@ class Ui_EndWindow(object):
         self.main_widget.setObjectName("main_widget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.main_widget)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.title = QtWidgets.QLabel(self.main_widget)
+        font = QtGui.QFont()
+        font.setFamily("JetBrains Mono")
+        font.setPointSize(16)
+        self.title.setFont(font)
+        self.title.setText("Game over")
+        self.title.setObjectName("title")
+        self.verticalLayout.addWidget(self.title, 0, QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.message_label = QtWidgets.QLabel(self.main_widget)
         font = QtGui.QFont()
         font.setFamily("JetBrains Mono")
