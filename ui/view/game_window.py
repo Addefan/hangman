@@ -134,4 +134,5 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
                 break
 
     def closeEvent(self, event):
-        self.player.send('exit'.encode('utf-8'))
+        if not self.game_is_over:
+            self.player.send('exit'.encode('utf-8'))
