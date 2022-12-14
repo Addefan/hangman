@@ -6,7 +6,7 @@ from PyQt6.QtCore import QObject, pyqtSignal
 from PyQt6.QtWidgets import QMainWindow, QApplication, QPushButton
 from PyQt6 import QtWidgets, QtCore, QtGui
 
-from enums import Role
+from enums import Role, Attempts
 from ui.base.start_window import Ui_StartWindow  # starting window in start_window.py
 import ui.view
 
@@ -98,9 +98,9 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         self.stop = True
 
         self.player.send(f'join;{gn}'.encode('ascii'))
-        guessing_word = self.player.recv(1024).decode('ascii')
+        game_info = self.player.recv(1024).decode('ascii').split(";")
 
-        self.game_window = ui.view.GameWindow(self.player, gn, Role.guesser, guessing_word, 6)
+        self.game_window = ui.view.GameWindow(self.player, gn, Role.guesser, game_info[0], Attempts(int(game_info[1])))
         self.game_window.restoreGeometry(self.saveGeometry())
         self.game_window.show()
         self.close()

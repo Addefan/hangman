@@ -128,3 +128,4 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
             except Exception as exc:
                 print(exc)
                 self.close()
+                break

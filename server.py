@@ -32,8 +32,7 @@ def create_game(game_name: str, player: socket.socket, word: str, attempts: int)
 
 
 def handle_game(game_name: str, guesser):
-    games[game_name] = [queue[game_name]['player'], guesser]
-    queue.pop(game_name)
+    games[game_name] = [queue.pop(game_name)['player'], guesser]
 
     while True:
         try:
@@ -41,7 +40,8 @@ def handle_game(game_name: str, guesser):
             broadcast(letter, game_name)
         except Exception as exc:
             print(exc)
-            games.pop(game_name)
+            games.pop(game_name) if game_name in games else None
+            break
 
 
 def handle_before_game(player):
@@ -51,23 +51,25 @@ def handle_before_game(player):
     while True:
         try:
             response = player.recv(1024).decode('ascii').split(';')
-            print(response)
+            # print(response)
             watching.remove(player)
             if response[0] == 'join':
-                player.send(queue[response[1]]['word'].encode('ascii'))  # sending word to guesser
-                print(queue[response[1]]['word'])
+                # sending game info to guesser
+                player.send(f"{queue[response[1]]['word']};{queue[response[1]]['attempts']}".encode('ascii'))
+                # print(queue[response[1]]['word'])
                 thread = threading.Thread(target=handle_game, args=(response[1], player))
                 thread.start()
                 break
-            else:
+            elif response[0] == 'create':
                 create_game(response[1], player, response[2], int(response[3]))
-                print(response)
-                send_game(response[1])
+                # print(response)
+                # send_game(response[1])
                 break
         except Exception as exc:
             print(exc)
             print('Removed player with failed connection!')
-            watching.remove(player)
+            watching.remove(player) if player in watching else None
+            break
 
 
 def start():
