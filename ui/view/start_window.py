@@ -89,8 +89,8 @@ class StartWindow(QMainWindow, Ui_StartWindow):
 
         self.create_window = ui.view.CreateWindow(self.player)
         self.create_window.restoreGeometry(self.saveGeometry())
-        for th in threading.enumerate():
-            print(th)
+        # for th in threading.enumerate():
+        #     print(th)
         self.create_window.show()
         self.close()
 

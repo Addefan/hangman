@@ -1,4 +1,5 @@
 import socket
+import sys
 import threading
 from os.path import join
 
@@ -57,7 +58,7 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
             self.__getattribute__(chr(letter)).clicked.connect(
                 lambda: self.player.send(self.sender().text().encode('utf-8')))
 
-        self.receiver = threading.Thread(target=self.receive)
+        self.receiver = threading.Thread(target=self.receive, daemon=True)
         self.receiver.start()
 
     def finish_game(self, result: bool):
@@ -134,5 +135,5 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
                 break
 
     def closeEvent(self, event):
-        if not self.game_is_over:
+        if not self.game_is_over and self.role == Role.guesser:
             self.player.send('exit'.encode('utf-8'))
