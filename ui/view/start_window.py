@@ -21,6 +21,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
 
     def __init__(self):
         super(StartWindow, self).__init__()
+        self.start_window = None
         self.create_window = None
         self.game_window = None
         self.setupUi(self)
@@ -37,7 +38,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
 
         self.receive_games()
 
-        self.update_button.clicked.connect(self.receive_games)
+        self.update_button.clicked.connect(self.refresh_window)
 
         # self.thread = threading.Thread(name='New games receiver', target=self.receive_new_game)
         # self.thread.start()
@@ -102,6 +103,13 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         self.game_window = ui.view.GameWindow(self.player, gn, Role.guesser, guessing_word, 6)
         self.game_window.restoreGeometry(self.saveGeometry())
         self.game_window.show()
+        self.close()
+
+    def refresh_window(self):
+        self.player.close()
+        self.start_window = __class__()
+        self.start_window.restoreGeometry(self.saveGeometry())
+        self.start_window.show()
         self.close()
 
 

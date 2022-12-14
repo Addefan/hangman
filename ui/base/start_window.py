@@ -13,6 +13,7 @@ class Ui_StartWindow(object):
     def setupUi(self, StartWindow):
         StartWindow.setObjectName("StartWindow")
         StartWindow.resize(587, 562)
+        StartWindow.setWindowTitle("Hangman")
         StartWindow.setStyleSheet("QPushButton{background:rgb(31, 44, 56);border-radius:3px;color:white;padding:4px;margin:4px;}QPushButton:hover{border:1px solid white;}QPushButton:pressed{color:black;background:white;}QScrollArea{border:3px solid rgb(31, 44, 56);border-radius:3px;}")
         self.main_widget = QtWidgets.QWidget(StartWindow)
         self.main_widget.setStyleSheet("backgroud-color: rgb(215, 225, 255)")
@@ -38,6 +39,7 @@ class Ui_StartWindow(object):
         font.setFamily("JetBrains Mono")
         font.setPointSize(12)
         self.new_game.setFont(font)
+        self.new_game.setText("New game")
         self.new_game.setObjectName("new_game")
         self.buttons_layout.addWidget(self.new_game, 0, QtCore.Qt.AlignmentFlag.AlignLeft)
         self.update_button = QtWidgets.QPushButton(self.main_widget)
@@ -47,6 +49,7 @@ class Ui_StartWindow(object):
         self.update_button.setFont(font)
         self.update_button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         self.update_button.setStyleSheet("")
+        self.update_button.setText("Refresh games")
         self.update_button.setObjectName("update_button")
         self.buttons_layout.addWidget(self.update_button, 0, QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.verticalLayout_2.addLayout(self.buttons_layout)
@@ -56,6 +59,7 @@ class Ui_StartWindow(object):
         font.setPointSize(16)
         self.games_title.setFont(font)
         self.games_title.setStyleSheet("")
+        self.games_title.setText("Join games")
         self.games_title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.games_title.setOpenExternalLinks(False)
         self.games_title.setObjectName("games_title")
@@ -87,8 +91,4 @@ class Ui_StartWindow(object):
         QtCore.QMetaObject.connectSlotsByName(StartWindow)
 
     def retranslateUi(self, StartWindow):
-        _translate = QtCore.QCoreApplication.translate
-        StartWindow.setWindowTitle(_translate("StartWindow", "Hangman"))
-        self.new_game.setText(_translate("StartWindow", "New game"))
-        self.update_button.setText(_translate("StartWindow", "Refresh games"))
-        self.games_title.setText(_translate("StartWindow", "Join games"))
+        pass
