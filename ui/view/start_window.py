@@ -44,7 +44,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         # self.thread.start()
 
     def receive_games(self):
-        games_str = self.player.recv(1024).decode('ascii')
+        games_str = self.player.recv(1024).decode('utf-8')
 
         for game in games_str.split():
             self.withdraw_game(game)
@@ -53,7 +53,7 @@ class StartWindow(QMainWindow, Ui_StartWindow):
     #     while True:
     #         if self.stop:
     #             break
-    #         game = self.player.recv(1024).decode('ascii')
+    #         game = self.player.recv(1024).decode('utf-8')
     #         print(game)
     #         self.signaller.added_game.emit(game)
 
@@ -97,8 +97,8 @@ class StartWindow(QMainWindow, Ui_StartWindow):
     def join_game(self, gn):
         self.stop = True
 
-        self.player.send(f'join;{gn}'.encode('ascii'))
-        game_info = self.player.recv(1024).decode('ascii').split(";")
+        self.player.send(f'join;{gn}'.encode('utf-8'))
+        game_info = self.player.recv(1024).decode('utf-8').split(";")
 
         self.game_window = ui.view.GameWindow(self.player, gn, Role.guesser, game_info[0], Attempts(int(game_info[1])))
         self.game_window.restoreGeometry(self.saveGeometry())

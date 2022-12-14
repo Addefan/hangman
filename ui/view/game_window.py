@@ -55,7 +55,7 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
         self.gif.frameChanged.connect(self.gif_frame_changed)
         for letter in range(65, 91):
             self.__getattribute__(chr(letter)).clicked.connect(
-                lambda: self.player.send(self.sender().text().encode('ascii')))
+                lambda: self.player.send(self.sender().text().encode('utf-8')))
 
         self.receiver = threading.Thread(target=self.receive)
         self.receiver.start()
@@ -123,7 +123,7 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
     def receive(self):
         while not self.game_is_over:
             try:
-                message = self.player.recv(1024).decode('ascii')
+                message = self.player.recv(1024).decode('utf-8')
                 if len(message) == 1:
                     self.letter_button_clicked(message)
                 elif message == "exit":
@@ -134,4 +134,4 @@ class GameWindow(QtWidgets.QMainWindow, Ui_GameWindow):
                 break
 
     def closeEvent(self, event):
-        self.player.send('exit'.encode('ascii'))
+        self.player.send('exit'.encode('utf-8'))

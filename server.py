@@ -15,12 +15,12 @@ queue = {}  # created games with one player waiting for opponent
 
 def broadcast(message: str, game_name):
     for player in games[game_name]:
-        player.send(message.encode('ascii'))
+        player.send(message.encode('utf-8'))
 
 
 def send_game(game_name):
     for player in watching:
-        player.send(game_name.encode('ascii'))
+        player.send(game_name.encode('uft-8'))
 
 
 def create_game(game_name: str, player: socket.socket, word: str, attempts: int):
@@ -36,7 +36,7 @@ def handle_game(game_name: str, guesser):
 
     while True:
         try:
-            message = guesser.recv(1024).decode('ascii')
+            message = guesser.recv(1024).decode('utf-8')
             if len(message) == 1:
                 broadcast(message, game_name)
             elif message == "exit":
@@ -49,17 +49,17 @@ def handle_game(game_name: str, guesser):
 
 
 def handle_before_game(player):
-    games_str = (' '.join(queue.keys())).encode('ascii') if len(queue) > 0 else ' '.encode('ascii')
+    games_str = (' '.join(queue.keys())).encode('utf-8') if len(queue) > 0 else ' '.encode('utf-8')
     player.send(games_str)
 
     while True:
         try:
-            response = player.recv(1024).decode('ascii').split(';')
+            response = player.recv(1024).decode('utf-8').split(';')
             # print(response)
             watching.remove(player)
             if response[0] == 'join':
                 # sending game info to guesser
-                player.send(f"{queue[response[1]]['word']};{queue[response[1]]['attempts']}".encode('ascii'))
+                player.send(f"{queue[response[1]]['word']};{queue[response[1]]['attempts']}".encode('utf-8'))
                 # print(queue[response[1]]['word'])
                 thread = threading.Thread(target=handle_game, args=(response[1], player))
                 thread.start()

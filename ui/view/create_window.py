@@ -34,7 +34,7 @@ class CreateWindow(QMainWindow, Ui_CreateWindow):
             game_name = f'{game_name}#{str(uuid.uuid4())[:4]}'
             guessing_word = self.guessing_word_input.text()
             attempts = int(self.attempts_number_choises.currentText())
-            self.player.send(f'create;{game_name};{guessing_word};{attempts}'.encode('ascii'))
+            self.player.send(f'create;{game_name};{guessing_word};{attempts}'.encode('utf-8'))
 
             self.game_window = ui.view.GameWindow(self.player, game_name, Role.leading,
                                                   guessing_word, Attempts(attempts))
