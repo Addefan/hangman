@@ -45,11 +45,3 @@ class CreateWindow(QMainWindow, Ui_CreateWindow):
     @staticmethod
     def validate_word(word):
         return word and not re.search(r'[^a-zA-Z]', word)
-
-
-if __name__ == "__main__":
-    app = QApplication([])
-    window = CreateWindow()
-
-    window.show()
-    app.exec()

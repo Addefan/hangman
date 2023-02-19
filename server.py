@@ -18,11 +18,6 @@ def broadcast(message: str, game_name):
         player.send(message.encode('utf-8'))
 
 
-def send_game(game_name):
-    for player in watching:
-        player.send(game_name.encode('uft-8'))
-
-
 def create_game(game_name: str, player: socket.socket, word: str, attempts: int):
     queue[game_name] = {
         'player': player,
@@ -55,19 +50,16 @@ def handle_before_game(player):
     while True:
         try:
             response = player.recv(1024).decode('utf-8').split(';')
-            # print(response)
             watching.remove(player)
             if response[0] == 'join':
                 # sending game info to guesser
                 player.send(f"{queue[response[1]]['word']};{queue[response[1]]['attempts']}".encode('utf-8'))
-                # print(queue[response[1]]['word'])
+
                 thread = threading.Thread(target=handle_game, args=(response[1], player))
                 thread.start()
                 break
             elif response[0] == 'create':
                 create_game(response[1], player, response[2], int(response[3]))
-                # print(response)
-                # send_game(response[1])
                 break
         except Exception as exc:
             print(exc)

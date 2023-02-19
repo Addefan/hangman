@@ -1,9 +1,7 @@
 import os
 import socket
-import threading
 
-from PyQt6.QtCore import QObject, pyqtSignal
-from PyQt6.QtWidgets import QMainWindow, QApplication, QPushButton
+from PyQt6.QtWidgets import QMainWindow, QApplication
 from PyQt6 import QtWidgets, QtCore, QtGui
 
 from enums import Role, Attempts
@@ -15,47 +13,27 @@ PORT = 5060
 
 
 class StartWindow(QMainWindow, Ui_StartWindow):
-    class Signaller(QObject):
-        added_game = pyqtSignal(str)
-        finished = pyqtSignal()
-
     def __init__(self):
         super(StartWindow, self).__init__()
         self.start_window = None
         self.create_window = None
         self.game_window = None
         self.setupUi(self)
-        self.stop = False
-        self.lock = threading.Lock()
 
         self.player = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.player.connect(('127.0.0.1', 5060))
 
         self.new_game.clicked.connect(self.create_game)
 
-        self.signaller = self.Signaller()
-        self.signaller.added_game.connect(self.withdraw_game)
-
         self.receive_games()
 
         self.update_button.clicked.connect(self.refresh_window)
-
-        # self.thread = threading.Thread(name='New games receiver', target=self.receive_new_game)
-        # self.thread.start()
 
     def receive_games(self):
         games_str = self.player.recv(1024).decode('utf-8')
 
         for game in games_str.split():
             self.withdraw_game(game)
-
-    # def receive_new_game(self):
-    #     while True:
-    #         if self.stop:
-    #             break
-    #         game = self.player.recv(1024).decode('utf-8')
-    #         print(game)
-    #         self.signaller.added_game.emit(game)
 
     def withdraw_game(self, game_name):
         frame = QtWidgets.QFrame(self.games)
@@ -85,18 +63,12 @@ class StartWindow(QMainWindow, Ui_StartWindow):
         button.clicked.connect(lambda checked, gn=game_name: self.join_game(gn))
 
     def create_game(self):
-        self.stop = True
-
         self.create_window = ui.view.CreateWindow(self.player)
         self.create_window.restoreGeometry(self.saveGeometry())
-        # for th in threading.enumerate():
-        #     print(th)
         self.create_window.show()
         self.close()
 
     def join_game(self, gn):
-        self.stop = True
-
         self.player.send(f'join;{gn}'.encode('utf-8'))
         game_info = self.player.recv(1024).decode('utf-8').split(";")
 
