@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CreateWindow</class>
+ <widget class="QMainWindow" name="CreateWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>587</width>
+    <height>562</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Hangman - Creating game</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{background:rgb(31, 44, 56);border-radius:3;color:white;padding:4px;margin:4px;}QPushButton:hover{border:1px solid white;}QPushButton:pressed{color:black;background:white;}QLineEdit,QComboBox{background: rgb(31, 44, 56);border-radius: 4px;color: white;}</string>
+  </property>
+  <widget class="QWidget" name="main_widget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+     <widget class="QLabel" name="window_title">
+      <property name="font">
+       <font>
+        <family>JetBrains Mono</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string notr="true">Creating game</string>
+      </property>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item alignment="Qt::AlignLeft">
+        <widget class="QLabel" name="message_label">
+         <property name="font">
+          <font>
+           <family>JetBrains Mono</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 0, 0);</string>
+         </property>
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
+     <widget class="QFrame" name="input_form">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="game_name">
+         <item>
+          <widget class="QLabel" name="game_name_label">
+           <property name="font">
+            <font>
+             <family>JetBrains Mono</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string notr="true">Game name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="game_name_input">
+           <property name="font">
+            <font>
+             <family>JetBrains Mono</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="guessing_word">
+         <item>
+          <widget class="QLabel" name="guessing_word_label">
+           <property name="font">
+            <font>
+             <family>JetBrains Mono</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string notr="true">Guessing word:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="guessing_word_input">
+           <property name="font">
+            <font>
+             <family>JetBrains Mono</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="attempts_number">
+         <item>
+          <widget class="QLabel" name="attempts_number_label">
+           <property name="font">
+            <font>
+             <family>JetBrains Mono</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string notr="true">Number of attempts:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="attempts_number_choises">
+           <property name="font">
+            <font>
+             <family>JetBrains Mono</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="currentText">
+            <string notr="true">6</string>
+           </property>
+           <item>
+            <property name="text">
+             <string notr="true">6</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">7</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">8</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">9</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">10</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">11</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">12</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">13</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="create_button">
+         <property name="font">
+          <font>
+           <family>JetBrains Mono</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string notr="true">Create</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

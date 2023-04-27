@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EndWindow</class>
+ <widget class="QMainWindow" name="EndWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>587</width>
+    <height>562</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Hangman - Game over</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{background:rgb(31, 44, 56);border-radius:3;color:white;padding:4px;margin:4px;}QPushButton:hover{border:1px solid white;}QPushButton:pressed{color:black;background:white;}</string>
+  </property>
+  <widget class="QWidget" name="main_widget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+     <widget class="QLabel" name="title">
+      <property name="font">
+       <font>
+        <family>JetBrains Mono</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string notr="true">Game over</string>
+      </property>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignHCenter">
+     <widget class="QLabel" name="message_label">
+      <property name="font">
+       <font>
+        <family>JetBrains Mono</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string notr="true"/>
+      </property>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+     <widget class="QPushButton" name="go_menu">
+      <property name="font">
+       <font>
+        <family>JetBrains Mono</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string notr="true">Go to main menu</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
